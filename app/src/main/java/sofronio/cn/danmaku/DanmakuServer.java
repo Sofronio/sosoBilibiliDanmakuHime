@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
  * Created by Shiromi on 2/6/16.
  * Update to 0.0.4 by Sofronio 2018-06-11
@@ -43,6 +44,7 @@ public class DanmakuServer implements Runnable {
     private String urlCIDInfo = "https://live.bilibili.com/api/player?id=cid:";
 
     private boolean connected = false;
+
     private String roomId = "";
 
     private Handler handler;
@@ -102,14 +104,12 @@ public class DanmakuServer implements Runnable {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-
             }
         }
         sendMessage(DanmakuResponse.DISCONNECT, "");
     }
 
-    private void disconnect()
+    public void disconnect()
     {
         try {
              connected = false;
@@ -136,8 +136,6 @@ public class DanmakuServer implements Runnable {
 
             String buf;
 
-
-
             Pattern p = Pattern.compile("<server>(.*)</server>");
             Matcher m;
             while ((buf = bufReader.readLine()) != null) {
@@ -152,7 +150,15 @@ public class DanmakuServer implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            sendMessage(DanmakuResponse.DEBUG, "Connect Faild!!\n" + e.getMessage());
+            /*
+            String disconnectString = "https://live.bilibili.com/api/player?id=cid:0";
+
+            if(e.getMessage().toLowerCase().contains(disconnectString.toLowerCase())) {
+                sendMessage(DanmakuResponse.DEBUG, "Disconnected!\n");
+                danmakuWwitch = false;
+            } else {
+                */
+            sendMessage(DanmakuResponse.DEBUG, "Connect Failed! Error:\n" + e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -285,8 +291,7 @@ public class DanmakuServer implements Runnable {
         dataO.flush();
     }
 
-    private boolean sendJoinChannel()
-    {
+    private boolean sendJoinChannel() {
         try {
             Random rand = new Random();
             long uid = (long) (1e14 + 2e14 * rand.nextDouble());
@@ -301,6 +306,7 @@ public class DanmakuServer implements Runnable {
             return false;
         }
     }
+
 
     private void sendMessage(int type, String msg) {
         Message message = new Message();

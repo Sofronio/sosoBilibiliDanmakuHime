@@ -8,54 +8,124 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.kuuhaku.bilidmk.MainActivity">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_connect_text"
-        android:id="@+id/btnConnect"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnNotice"
-        android:layout_toStartOf="@+id/btnNotice" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_notice_text"
-        android:id="@+id/btnNotice"
-        android:layout_toLeftOf="@+id/cbReconnect"
-        android:layout_alignParentTop="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cb_reconnect_text"
-        android:id="@+id/cbReconnect"
-        android:layout_alignTop="@+id/iptRoomId"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <EditText
+        android:id="@+id/iptRoomId"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="@string/editText_roomId_text"
+        android:layout_below="@+id/my_toolbar" />
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:text="@string/btn_connect_text"
+        android:background="@drawable/feelsokayman"
+        android:scaleType="centerCrop"
+        android:textSize="0sp"
+        android:layout_margin="5dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_toRightOf="@+id/iptRoomId" />
+
+    <Button
+        android:id="@+id/btnDisconnect"
+        android:text="@string/btn_disconnect_text"
+        android:background="@drawable/feelsbadman"
+        android:scaleType="centerCrop"
+        android:textSize="0sp"
+        android:layout_margin="5dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_toRightOf="@+id/btnConnect" />
+
+    <Button
+        android:id="@+id/btnNotice"
+        android:text="@string/btn_notice_text"
+        android:background="@drawable/testdanmaku"
+        android:scaleType="centerCrop"
+        android:textSize="0sp"
+        android:layout_margin="5dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_toRightOf="@+id/btnDisconnect" />
+
+    <Button
+        android:id="@+id/btnMute"
+        android:text="@string/btn_mute_text"
+        android:background="@drawable/monkah"
+        android:scaleType="centerCrop"
+        android:textSize="0sp"
+        android:layout_margin="5dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_toRightOf="@+id/btnNotice" />
+
+    <Button
+        android:id="@+id/btnRandom"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/btnMute"
+        android:background="@drawable/blessrng"
+        android:scaleType="centerCrop"
+        android:text="@string/btn_mute_text"
+        android:textSize="0sp" />
+
+    <CheckBox
+        android:id="@+id/cbRead"
+        android:text="@string/cb_read_text"
+        android:layout_below="@+id/iptRoomId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cbOverRead"
+        android:text="@string/cb_overRead_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/iptRoomId"
-        android:text="20767"
-        android:layout_alignBottom="@+id/btnConnect"
-        android:layout_toLeftOf="@+id/btnConnect"
-        android:layout_toStartOf="@+id/btnConnect" />
+        android:layout_below="@+id/iptRoomId"
+        android:layout_toRightOf="@+id/cbRead" />
+
+    <CheckBox
+        android:id="@+id/cbReconnect"
+        android:text="@string/cb_reconnect_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iptRoomId"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/cbOverRead" />
 
     <ListView
+        android:id="@+id/dmkList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dmkList"
-        android:layout_below="@+id/iptRoomId"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cbRead"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="-10dp"
+        android:ems="8"
+        android:stackFromBottom="false"
+        android:transcriptMode="normal"
+    />
 </RelativeLayout>

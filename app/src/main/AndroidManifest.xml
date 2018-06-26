@@ -10,8 +10,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:id="@+id/mainActivity"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        >
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,5 +28,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -1,6 +1,15 @@
 <resources>
-    <string name="app_name">soso谷歌娘</string>
-    <string name="btn_connect_text">连接</string>
-    <string name="btn_notice_text">测试</string>
-    <string name="cb_reconnect_text">自动重连</string>
+    <string name="app_name">sosoBilibiliDanmakuHime</string>
+    <string name="editText_roomId_text"></string>
+    <string name="btn_connect_text">Start</string>
+    <string name="btn_disconnect_text">Stop</string>
+    <string name="btn_notice_text">Test</string>
+    <string name="btn_mute_text">MuteNow!</string>
+    <string name="cb_reconnect_text">AutoReCon</string>
+    <string name="cb_read_text">ReadDanmaku</string>
+    <string name="cb_overRead_text">OverRead</string>
+    <string name="t_count_text">Viewer count </string>
+    <string name="t_connect_text">Connecting to</string>
+    <string name="t_disconnect_text">Disconnected</string>
+    <string name="room">Room</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">sosoB站弹幕姬</string>
+    <string name="btn_connect_text">连接</string>
+    <string name="btn_notice_text">测试</string>
+    <string name="cb_reconnect_text">自动重连</string>
+    <string name="cb_read_text">弹幕声音</string>
+    <string name="cb_overRead_text">发声覆盖</string>
+    <string name="btn_mute_text">清空语音</string>
+    <string name="btn_disconnect_text">断开</string>
+    <string name="t_count_text">观众人数 </string>
+    <string name="t_connect_text">正在连接到 </string>
+    <string name="t_disconnect_text">断开</string>
+    <string name="room">房间号 </string>
+</resources>
