@@ -1,6 +1,6 @@
 # sosoBilibiliDanmakuHime
 ## Discription
-Another bilibili danmaku reader.
+Another android bilibili danmaku reader.
 
 In 2016, I got a android apk which can connect to bilibili live room, and got the danmaku (floating comment text). By that time, I have already wrote a c# plugin for danmuji.org, and I assume it should not be quite difficult to write another one on Android.
 
