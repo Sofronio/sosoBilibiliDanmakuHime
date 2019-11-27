@@ -95,12 +95,20 @@
         android:layout_height="wrap_content" />
 
     <CheckBox
+        android:id="@+id/cbGift"
+        android:text="@string/cb_gift"
+        android:layout_below="@+id/iptRoomId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/cbRead" />
+
+    <CheckBox
         android:id="@+id/cbOverRead"
         android:text="@string/cb_overRead_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iptRoomId"
-        android:layout_toRightOf="@+id/cbRead" />
+        android:layout_toRightOf="@+id/cbGift" />
 
     <CheckBox
         android:id="@+id/cbReconnect"

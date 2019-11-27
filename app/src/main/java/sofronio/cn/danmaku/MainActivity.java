@@ -5,6 +5,7 @@ package sofronio.cn.danmaku;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -22,10 +23,21 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import static android.speech.tts.TextToSpeech.*;
 import static android.util.Log.d;
 
@@ -48,9 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnMute;
     private Button btnRandom;
     private CheckBox cbRead;
+    private CheckBox cbGift;
     private CheckBox cbOverRead;
     private CheckBox cbReconnect;
     private ListView dmkList;
+//    private JsonRegex jsonRegex[];
 
     private Boolean WelcomeFlag = false;
 
@@ -67,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private class JsonRegex {
+        private String Regex;
+        private String Chinese;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +97,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Welcome();
         loadSetting();
     }
+    private String regex(String str_input){
+        String json = loadJson();
+        TypeToken typeToken = new TypeToken<List<JsonRegex>>() {};
+        Type type = typeToken.getType();
+        Gson gson = new Gson();
+        List<JsonRegex> jsonRegex = gson.fromJson(json, type);
+        for(int i = 0; i < jsonRegex.size(); i++)
+        {
+            //Log.d("DEBUG", jsonRegex.get(i).Chinese);
+            //Log.d("DEBUG", jsonRegex.get(i).Regex);
+            String str_pattern = jsonRegex.get(i).Regex;
+            String str_replace= jsonRegex.get(i).Chinese;
+            //Log.d("DEBUG", str_input);
+            str_input = str_input.replaceAll(str_pattern, str_replace);
+            //Log.d("DEBUG", str_input);
+        }
+        return str_input;
+    }
+
+    private static int countLines(String str){
+        String[] lines = str.split("\r\n|\r|\n");
+        return  lines.length;
+    }
+
+    private String loadJson() {
+        //String fileName = "soso_Google_Hime_Regex.json";
+
+        String json = null;
+        try {
+            InputStream is = getAssets().open("soso_Google_Hime_Regex.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+            //Log.d("DEBUG", (String)json);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return json;
+    }
+
 
     private void registerEvent() {
         //注册事件
@@ -88,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRandom.setOnClickListener(this);
         cbReconnect.setOnClickListener(this);
         cbRead.setOnClickListener(this);
+        cbGift.setOnClickListener(this);
         cbOverRead.setOnClickListener(this);
     }
 
@@ -101,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRandom = (Button) findViewById(R.id.btnRandom);
         cbReconnect = (CheckBox) findViewById(R.id.cbReconnect);
         cbRead = (CheckBox) findViewById(R.id.cbRead);
+        cbGift = (CheckBox) findViewById(R.id.cbGift);
         cbOverRead = (CheckBox) findViewById(R.id.cbOverRead);
         dmkList = (ListView) findViewById(R.id.dmkList);
 
@@ -113,9 +176,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void Welcome() {
         if (!WelcomeFlag) {
-            dmkData.add("sosoB站手机弹幕姬0.0.5版 by Sofronio");
+            dmkData.add("sosoB站手机弹幕姬0.0.6版 by Sofronio");
             //adapter.notifyDataSetChanged();
-            dmkData.add("B站直播间20767 BuildDate 2018-06-25");
+            dmkData.add("B站直播间20767 BuildDate 2019-11-27");
             //adapter.notifyDataSetChanged();
             dmkData.add("感谢原B站手机弹幕姬作者 by 姪乃浜梢");
             //adapter.notifyDataSetChanged();
@@ -200,13 +263,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setNotification() {
-        String response = "这是一个测试1234567890";
+        String response = "弹幕测试12345";
         if (myTTS != null && cbRead.isChecked()) {
             //String[] str_temp = speechText.split("说:");
             if (cbOverRead.isChecked()) {
-                myTTS.speak(response, QUEUE_FLUSH, null);
+                myTTS.speak(regex(response), QUEUE_FLUSH, null);
             } else {
-                myTTS.speak(response, QUEUE_ADD, null);
+                myTTS.speak(regex(response), QUEUE_ADD, null);
             }
         }
         //dmkData.add(0, response);
@@ -241,6 +304,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             value = sp.getString("cbRead", "false");
             cbRead.setChecked(Boolean.parseBoolean(value));
+
+            value = sp.getString("cbGift", "false");
+            cbGift.setChecked(Boolean.parseBoolean(value));
 
             value = sp.getString("cbOverRead", "false");
             cbOverRead.setChecked(Boolean.parseBoolean(value));
@@ -321,6 +387,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void cbGift_checkedChanged() {
+        if (cbGift.isChecked()) {
+            saveSetting("cbGift", "true");
+        } else {
+            saveSetting("cbGift", "false");
+        }
+    }
+
     private void cbOverRead_checkedChanged() {
         if (cbOverRead.isChecked()) {
             saveSetting("cbOverRead", "true");
@@ -352,6 +426,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.cbRead:
                 cbRead_checkedChanged();
+                break;
+            case R.id.cbGift:
+                cbGift_checkedChanged();
                 break;
             case R.id.cbOverRead:
                 cbOverRead_checkedChanged();
@@ -415,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         private void speechGift(String speechText) {
-            if (myTTS != null && cbRead.isChecked()) {
+            if (myTTS != null && cbRead.isChecked() && cbGift.isChecked()) {
                 //String[] str_temp = speechText.split("说:");
                 if (cbOverRead.isChecked()) {
                     myTTS.speak(speechText, QUEUE_FLUSH, null);
@@ -428,13 +505,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private void speechDanmaku(String speechText) {
             if (myTTS != null && cbRead.isChecked()) {
                 String[] str_temp = speechText.split("说:");
+
                 if (cbOverRead.isChecked()) {
-                    myTTS.speak(str_temp[1], QUEUE_FLUSH, null);
+                    myTTS.speak(regex(str_temp[1]), QUEUE_FLUSH, null);
                 } else {
-                    myTTS.speak(str_temp[1], QUEUE_ADD, null);
+                    myTTS.speak(regex(str_temp[1]), QUEUE_ADD, null);
                 }
             }
         }
+
+
+
+
 
         public void onInit(int status) {
 

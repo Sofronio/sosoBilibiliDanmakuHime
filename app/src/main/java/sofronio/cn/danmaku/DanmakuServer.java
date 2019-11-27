@@ -38,10 +38,10 @@ public class DanmakuServer implements Runnable {
     private static final String TAG = "DanmakuServer";
     private static final int protocolVersion = 1;
     private List list = new ArrayList();
-    private String chatHost = "chat.bilibili.com";
+    private String chatHost = "broadcastlv.chat.bilibili.com";
     private int chatPort = 2243;
 
-    private String urlCIDInfo = "https://live.bilibili.com/api/player?id=cid:";
+    private String urlCIDInfo = "https://api.live.bilibili.com/room/v1/Room/room_init?id=";
 
     private boolean connected = false;
 
@@ -67,8 +67,8 @@ public class DanmakuServer implements Runnable {
     public void run() {
         Log.i(TAG, "Run Task!");
 
-        String chatHost;
-        if ((chatHost = getRoomInfo()) != null) {
+        //String chatHost;
+        //if ((chatHost = getRoomInfo()) != null) {
             sendMessage(DanmakuResponse.DEBUG, "Connecting:" + chatHost);
             try {
                 socket = new Socket(chatHost, chatPort);
@@ -81,14 +81,14 @@ public class DanmakuServer implements Runnable {
 
                 if (sendJoinChannel()) {
                     connected = true;
-                    Log.d(TAG, "Heart Beat Start!!");
+                    Log.i(TAG, "Heart Beat Start!!");
                     heartBeat = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 while (connected) {
                                     sendSocketData(2);
-                                    Log.d(TAG, "Heart Beat!");
+                                    Log.i(TAG, "Heart Beat!");
                                     synchronized (this) {
                                         this.wait(30000);
                                     }
@@ -99,13 +99,13 @@ public class DanmakuServer implements Runnable {
                         }
                     });
                     heartBeat.start();
-                     Log.d(TAG, "Receive Start!");
+                     Log.i(TAG, "Receive Start!");
                      receiveMessageLoop();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        //}
         sendMessage(DanmakuResponse.DISCONNECT, "");
     }
 
@@ -120,12 +120,12 @@ public class DanmakuServer implements Runnable {
     }
 
     private String getRoomInfo() {
-        //sendMessage(DanmakuResponse.DEBUG, "GetRoomInfo:" + roomId);
+        sendMessage(DanmakuResponse.DEBUG, "GetRoomInfo:" + roomId);
 
         HttpURLConnection connection = null;
         try {
             URL requestUrl = new URL(urlCIDInfo + roomId);
-            //sendMessage(DanmakuResponse.DEBUG, "Request:" + urlCIDInfo + roomId);
+            sendMessage(DanmakuResponse.DEBUG, "Request:" + urlCIDInfo + roomId);
             connection = (HttpURLConnection) requestUrl.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(10000);
@@ -139,14 +139,15 @@ public class DanmakuServer implements Runnable {
             Pattern p = Pattern.compile("<server>(.*)</server>");
             Matcher m;
             while ((buf = bufReader.readLine()) != null) {
-                //sendMessage(DanmakuResponse.DEBUG, "Received:" + buf);
+                sendMessage(DanmakuResponse.DEBUG, "Received:" + buf);
                 m = p.matcher(buf);
                 if (m.matches()) {
                     //sendMessage(DanmakuResponse.DEBUG, "ServerFound:" + m.group(1));
-
+                    sendMessage(DanmakuResponse.DEBUG, "m ok" + m.group(1));
                     return m.group(1);
                 }
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,7 +165,9 @@ public class DanmakuServer implements Runnable {
                 connection.disconnect();
             }
         }
+        sendMessage(DanmakuResponse.DEBUG, "null!");
         return null;
+
     }
 
     private void receiveMessageLoop()
@@ -308,7 +311,7 @@ public class DanmakuServer implements Runnable {
     }
 
 
-    private void sendMessage(int type, String msg) {
+    public void sendMessage(int type, String msg) {
         Message message = new Message();
         message.what = type;
         message.obj = msg;
