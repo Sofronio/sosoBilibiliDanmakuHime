@@ -14,6 +14,11 @@ And if you're using MIUI, you may have to look up this app in battery setting to
 
 ## Change log
 
+### v.0.0.6
+* Add dedicated Gift reading checkbox.
+* Add regex filter, but not customable right now.
+* Fix bilibili protocol.
+
 ### v.0.0.5
 * Add image button, monkaS!
 * Add random number generator.
@@ -37,10 +42,10 @@ And if you're using MIUI, you may have to look up this app in battery setting to
 * First edition.
 
 ## TODO
-* 独立礼物播报开关
+* ~~独立礼物播报开关~~
 * 语速调整
 * 设置界面
-* 弹幕姬文字正则匹配
+* ~~弹幕姬文字正则匹配~~但尚不可自定义
 * 礼物防火墙
 * 弹幕发送者颜色
 * 音量调整
